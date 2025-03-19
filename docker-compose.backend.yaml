@@ -97,11 +97,11 @@ services:
   promort-web:
 
     image: ${PROMORT_IMG:-promort-web}
-    build:
-      context: ./build/promort
-      args:
-        PROMORT_REPO: $PROMORT_REPO
-        PROMORT_BRANCH: $PROMORT_BRANCH
+    # build:
+    #   context: ./build/promort
+    #   args:
+    #     PROMORT_REPO: $PROMORT_REPO
+        # PROMORT_BRANCH: $PROMORT_BRANCH
     depends_on: 
       - promort-db
     entrypoint: ['/usr/local/bin/wait-for-it.sh', 'promort-db:5432', '--',

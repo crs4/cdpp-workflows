@@ -87,8 +87,7 @@ services:
         context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
         args: 
           CWL_AIRFLOW_VERSION: *cwl_airflow_branch
-      <<: *airflow_volumes
-      <<: *airflow_env_var
+      <<: [*airflow_volumes, *airflow_env_var]
       # <<: *airflow_env_file
       restart: always
       command: start_webserver.sh

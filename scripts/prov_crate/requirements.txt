@@ -1,3 +1,4 @@
 cwl-utils==0.13
 rocrate==0.7.0
 pyyaml~=5.4.0
+cython<3.0.0
