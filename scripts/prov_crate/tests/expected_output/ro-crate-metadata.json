@@ -4,7 +4,7 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2022-10-17T13:25:19+00:00",
+            "datePublished": "2025-03-19T16:14:47+00:00",
             "hasPart": [
                 {
                     "@id": "predictions.cwl"
@@ -26,7 +26,7 @@
             },
             "mentions": [
                 {
-                    "@id": "#a9f2f0c5-32da-4547-813d-e10f58c9502e"
+                    "@id": "#48d0a503-4b74-42a2-9079-956c5838d2a2"
                 }
             ],
             "name": "Promort tissue and tumor prediction"
@@ -58,9 +58,6 @@
                     "@id": "predictions.cwl#slide"
                 },
                 {
-                    "@id": "predictions.cwl#mode"
-                },
-                {
                     "@id": "predictions.cwl#tissue-low-level"
                 },
                 {
@@ -70,7 +67,7 @@
                     "@id": "predictions.cwl#tissue-high-level"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-low-chunk"
+                    "@id": "predictions.cwl#tissue-low-chunk-size"
                 },
                 {
                     "@id": "predictions.cwl#tissue-high-label"
@@ -79,10 +76,10 @@
                     "@id": "predictions.cwl#tissue-high-filter"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-high-chunk"
+                    "@id": "predictions.cwl#tissue-high-chunk-size"
                 },
                 {
-                    "@id": "predictions.cwl#tumor-chunk"
+                    "@id": "predictions.cwl#tumor-chunk-size"
                 },
                 {
                     "@id": "predictions.cwl#gpu"
@@ -117,16 +114,16 @@
             "@type": "ComputerLanguage",
             "alternateName": "CWL",
             "identifier": {
-                "@id": "https://w3id.org/cwl/v1.2/"
+                "@id": "https://w3id.org/cwl/v1.1/"
             },
             "name": "Common Workflow Language",
             "url": {
                 "@id": "https://www.commonwl.org/"
             },
-            "version": "v1.2"
+            "version": "v1.1"
         },
         {
-            "@id": "#a9f2f0c5-32da-4547-813d-e10f58c9502e",
+            "@id": "#48d0a503-4b74-42a2-9079-956c5838d2a2",
             "@type": "CreateAction",
             "endTime": "2021-06-29T16:09:45.814390+00:00",
             "instrument": {
@@ -138,9 +135,6 @@
                     "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs"
                 },
                 {
-                    "@id": "#pv-mode"
-                },
-                {
                     "@id": "#pv-tissue-low-level"
                 },
                 {
@@ -150,7 +144,7 @@
                     "@id": "#pv-tissue-high-level"
                 },
                 {
-                    "@id": "#pv-tissue-low-chunk"
+                    "@id": "#pv-tissue-low-chunk-size"
                 },
                 {
                     "@id": "#pv-tissue-high-label"
@@ -159,10 +153,10 @@
                     "@id": "#pv-tissue-high-filter"
                 },
                 {
-                    "@id": "#pv-tissue-high-chunk"
+                    "@id": "#pv-tissue-high-chunk-size"
                 },
                 {
-                    "@id": "#pv-tumor-chunk"
+                    "@id": "#pv-tumor-chunk-size"
                 },
                 {
                     "@id": "#pv-gpu"
@@ -201,21 +195,6 @@
             "exampleOfWork": {
                 "@id": "predictions.cwl#slide"
             }
-        },
-        {
-            "@id": "predictions.cwl#mode",
-            "@type": "FormalParameter",
-            "additionalType": "Text",
-            "name": "mode"
-        },
-        {
-            "@id": "#pv-mode",
-            "@type": "PropertyValue",
-            "exampleOfWork": {
-                "@id": "predictions.cwl#mode"
-            },
-            "name": "mode",
-            "value": "serial"
         },
         {
             "@id": "predictions.cwl#tissue-low-level",
@@ -263,18 +242,18 @@
             "value": "8"
         },
         {
-            "@id": "predictions.cwl#tissue-low-chunk",
+            "@id": "predictions.cwl#tissue-low-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tissue-low-chunk"
+            "name": "tissue-low-chunk-size"
         },
         {
-            "@id": "#pv-tissue-low-chunk",
+            "@id": "#pv-tissue-low-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-low-chunk"
+                "@id": "predictions.cwl#tissue-low-chunk-size"
             },
-            "name": "tissue-low-chunk",
+            "name": "tissue-low-chunk-size",
             "value": "256"
         },
         {
@@ -308,33 +287,33 @@
             "value": "tissue_low>1"
         },
         {
-            "@id": "predictions.cwl#tissue-high-chunk",
+            "@id": "predictions.cwl#tissue-high-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tissue-high-chunk"
+            "name": "tissue-high-chunk-size"
         },
         {
-            "@id": "#pv-tissue-high-chunk",
+            "@id": "#pv-tissue-high-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-high-chunk"
+                "@id": "predictions.cwl#tissue-high-chunk-size"
             },
-            "name": "tissue-high-chunk",
+            "name": "tissue-high-chunk-size",
             "value": "1536"
         },
         {
-            "@id": "predictions.cwl#tumor-chunk",
+            "@id": "predictions.cwl#tumor-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tumor-chunk"
+            "name": "tumor-chunk-size"
         },
         {
-            "@id": "#pv-tumor-chunk",
+            "@id": "#pv-tumor-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor-chunk"
+                "@id": "predictions.cwl#tumor-chunk-size"
             },
-            "name": "tumor-chunk",
+            "name": "tumor-chunk-size",
             "value": "1536"
         },
         {

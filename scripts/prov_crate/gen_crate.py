@@ -31,6 +31,7 @@ import shutil
 import tempfile
 import zipfile
 from pathlib import Path
+from urllib.parse import urlsplit
 
 import yaml
 from cwl_utils.parser import load_document_by_uri
@@ -77,7 +78,7 @@ def get_params(source, metadata):
 
 def get_workflow(source, metadata):
     workflow_path = source / metadata["workflow"]
-    return load_document_by_uri(workflow_path)
+    return load_document_by_uri(workflow_path, load_all=True)
 
 
 def get_param_types(params, wf_def):
@@ -85,7 +86,7 @@ def get_param_types(params, wf_def):
     inputs_by_id = {_.id.rsplit("#", 1)[1]: _ for _ in wf_def.inputs}
     for k, v in params.items():
         in_ = inputs_by_id[k]
-        t = in_.type
+        t = in_.type_
         if isinstance(t, list):
             t = [_ for _ in t if _ != "null"][0]
         rval[k] = TYPE_MAP[t]
@@ -183,6 +184,9 @@ def make_crate(source, out_dir):
     add_params(params, param_types, metadata, source, crate, action)
     crate.root_dataset["mentions"] = [action]
     crate.write(out_dir)
+    for step in wf_def.steps:
+        tool_path = urlsplit(step.run).path
+        shutil.copy(tool_path, out_dir)
 
 
 def main(args):
