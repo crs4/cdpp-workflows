@@ -513,9 +513,11 @@ def gather_report(dag_info):
     slide_path = os.path.join(STAGE_DIR, slide_basename)
     shutil.copy(slide_path, output_dir)
     secondary_files = os.path.splitext(slide_path)[0]
-    shutil.copytree(
-        secondary_files, os.path.join(output_dir, os.path.basename(secondary_files))
-    )
+    dest_secondary_files = os.path.join(output_dir, os.path.basename(secondary_files))
+    logger.info("copying %s to %s", secondary_files, dest_secondary_files)
+    if not os.path.exists(dest_secondary_files):
+        shutil.copytree(
+            secondary_files, dest_secondary_files)
 
     return output_dir
 
