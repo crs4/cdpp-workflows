@@ -4,7 +4,19 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2025-03-20T11:07:37+00:00",
+            "conformsTo": [
+                {
+                    "@id": "https://w3id.org/ro/wfrun/process/0.5"
+                },
+                {
+                    "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ],
+            "datePublished": "2025-03-20T15:44:14+00:00",
+            "description": "Promort tissue and tumor prediction",
             "hasPart": [
                 {
                     "@id": "predictions.cwl"
@@ -29,10 +41,10 @@
             },
             "mentions": [
                 {
-                    "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80"
+                    "@id": "#879982eb-904d-4a85-b768-78254e1f3e14"
                 },
                 {
-                    "@id": "#79d705c2-fe04-4f86-ad80-852aa6ef8d28"
+                    "@id": "#e5660e6c-9baf-4ec0-84ba-d04391730f84"
                 }
             ],
             "name": "Promort tissue and tumor prediction"
@@ -51,6 +63,24 @@
                     "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
                 }
             ]
+        },
+        {
+            "@id": "https://w3id.org/ro/wfrun/process/0.5",
+            "@type": "CreativeWork",
+            "name": "Process Run Crate",
+            "version": "0.5"
+        },
+        {
+            "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+            "@type": "CreativeWork",
+            "name": "Workflow Run Crate",
+            "version": "0.5"
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+            "@type": "CreativeWork",
+            "name": "Workflow RO-Crate",
+            "version": "1.0"
         },
         {
             "@id": "predictions.cwl",
@@ -112,8 +142,7 @@
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#cwl"
             },
-            "url": "https://github.com/crs4/deephealth-pipelines",
-            "version": "0.1.0b1"
+            "url": "https://github.com/crs4/deephealth-pipelines"
         },
         {
             "@id": "https://w3id.org/workflowhub/workflow-ro-crate#cwl",
@@ -129,7 +158,7 @@
             "version": "v1.1"
         },
         {
-            "@id": "#79d705c2-fe04-4f86-ad80-852aa6ef8d28",
+            "@id": "#e5660e6c-9baf-4ec0-84ba-d04391730f84",
             "@type": "CreateAction",
             "endTime": "2021-06-29T16:09:45.814390+00:00",
             "instrument": {
@@ -138,7 +167,7 @@
             "name": "Promort prediction run on 2021-06-29T16:07:14.873427+00:00",
             "object": [
                 {
-                    "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80"
+                    "@id": "#879982eb-904d-4a85-b768-78254e1f3e14"
                 },
                 {
                     "@id": "#pv-tissue-low-level"
@@ -204,7 +233,7 @@
             "@type": "Dataset"
         },
         {
-            "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80",
+            "@id": "#879982eb-904d-4a85-b768-78254e1f3e14",
             "@type": "Collection",
             "exampleOfWork": {
                 "@id": "predictions.cwl#slide"

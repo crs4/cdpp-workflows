@@ -45,7 +45,6 @@ except ImportError:
 
 METADATA_BASENAME = "metadata.yaml"
 WORKFLOW_NAME = "Promort tissue and tumor prediction"
-WORKFLOW_VERSION = "0.1.0b1"
 WORKFLOW_URL = "https://github.com/crs4/deephealth-pipelines"
 WORKFLOW_LICENSE = "MIT"
 TYPE_MAP = {
@@ -61,6 +60,9 @@ TYPE_MAP = {
 }
 MIRAX_URL = "https://openslide.org/formats/mirax/"
 ZARR_URL = "https://zarr.readthedocs.io/en/stable/spec/v2.html"
+PROFILES_BASE = "https://w3id.org/ro/wfrun"
+PROFILES_VERSION = "0.5"
+WROC_PROFILE_VERSION = "1.0"
 
 
 def get_metadata(source):
@@ -91,6 +93,24 @@ def get_param_types(params, wf_def):
             t = [_ for _ in t if _ != "null"][0]
         rval[k] = TYPE_MAP[t]
     return rval
+
+
+def add_profiles(crate):
+    profiles = []
+    for p in "process", "workflow":
+        id_ = f"{PROFILES_BASE}/{p}/{PROFILES_VERSION}"
+        profiles.append(crate.add(ContextEntity(crate, id_, properties={
+            "@type": "CreativeWork",
+            "name": f"{p.title()} Run Crate",
+            "version": PROFILES_VERSION,
+        })))
+    wroc_profile_id = f"https://w3id.org/workflowhub/workflow-ro-crate/{WROC_PROFILE_VERSION}"
+    profiles.append(crate.add(ContextEntity(crate, wroc_profile_id, properties={
+        "@type": "CreativeWork",
+        "name": "Workflow RO-Crate",
+        "version": WROC_PROFILE_VERSION,
+    })))
+    crate.root_dataset["conformsTo"] = profiles
 
 
 def add_action(crate, metadata):
@@ -175,13 +195,14 @@ def make_crate(source, out_dir):
     metadata = get_metadata(source)
     workflow_path = source / metadata["workflow"]
     crate = ROCrate(gen_preview=False)
+    add_profiles(crate)
     wf_def = get_workflow(source, metadata)
     workflow = crate.add_workflow(
         workflow_path, metadata["workflow"], main=True, lang="cwl",
         lang_version=wf_def.cwlVersion, gen_cwl=False
     )
     workflow["name"] = crate.root_dataset["name"] = WORKFLOW_NAME
-    workflow["version"] = WORKFLOW_VERSION  # this should be in the report
+    crate.root_dataset["description"] = WORKFLOW_NAME
     workflow["url"] = crate.root_dataset["isBasedOn"] = WORKFLOW_URL
     crate.root_dataset["license"] = WORKFLOW_LICENSE
     # No README.md for now
