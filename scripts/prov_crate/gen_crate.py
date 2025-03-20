@@ -112,7 +112,7 @@ def add_params(params, param_types, metadata, source, crate, action):
     workflow = crate.mainEntity
     inputs, outputs, objects, results = [], [], [], []
     for k, v in params.items():
-        add_type = "ImageObject" if k == "slide" else param_types[k]
+        add_type = "Collection" if k == "slide" else param_types[k]
         in_ = crate.add(ContextEntity(crate, f"{workflow.id}#{k}", properties={
             "@type": "FormalParameter",
             "name": k,
@@ -123,12 +123,19 @@ def add_params(params, param_types, metadata, source, crate, action):
             in_["encodingFormat"] = MIRAX_URL
         inputs.append(in_)
         if isinstance(v, dict) and v.get("class") == "File":
-            obj = crate.add_file(
-                v["path"],
-                fetch_remote=False,
-                validate_url=False,
+            mrxs_path = source / v["path"]
+            add_files_path = source / mrxs_path.stem
+            mrxs_file = crate.add_file(
+                mrxs_path,
                 properties={"encodingFormat": MIRAX_URL}
             )
+            add_files_dataset = crate.add_dataset(add_files_path)
+            obj = crate.add(ContextEntity(crate, properties={
+                "@type": "Collection"
+            }))
+            obj["mainEntity"] = mrxs_file
+            obj["hasPart"] = [mrxs_file, add_files_dataset]
+            crate.root_dataset.append_to("mentions", obj)
         else:
             obj = crate.add(ContextEntity(crate, f"#pv-{k}", properties={
                 "@type": "PropertyValue",
@@ -182,7 +189,7 @@ def make_crate(source, out_dir):
     params = get_params(source, metadata)
     param_types = get_param_types(params, wf_def)
     add_params(params, param_types, metadata, source, crate, action)
-    crate.root_dataset["mentions"] = [action]
+    crate.root_dataset.append_to("mentions", action)
     crate.write(out_dir)
     for step in wf_def.steps:
         tool_path = urlsplit(step.run).path

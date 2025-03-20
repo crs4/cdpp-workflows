@@ -4,13 +4,16 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2025-03-19T16:14:47+00:00",
+            "datePublished": "2025-03-20T11:07:37+00:00",
             "hasPart": [
                 {
                     "@id": "predictions.cwl"
                 },
                 {
-                    "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs"
+                    "@id": "Mirax2-Fluorescence-2.mrxs"
+                },
+                {
+                    "@id": "Mirax2-Fluorescence-2/"
                 },
                 {
                     "@id": "tissue_high.zip"
@@ -26,7 +29,10 @@
             },
             "mentions": [
                 {
-                    "@id": "#48d0a503-4b74-42a2-9079-956c5838d2a2"
+                    "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80"
+                },
+                {
+                    "@id": "#79d705c2-fe04-4f86-ad80-852aa6ef8d28"
                 }
             ],
             "name": "Promort tissue and tumor prediction"
@@ -123,7 +129,7 @@
             "version": "v1.1"
         },
         {
-            "@id": "#48d0a503-4b74-42a2-9079-956c5838d2a2",
+            "@id": "#79d705c2-fe04-4f86-ad80-852aa6ef8d28",
             "@type": "CreateAction",
             "endTime": "2021-06-29T16:09:45.814390+00:00",
             "instrument": {
@@ -132,7 +138,7 @@
             "name": "Promort prediction run on 2021-06-29T16:07:14.873427+00:00",
             "object": [
                 {
-                    "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs"
+                    "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80"
                 },
                 {
                     "@id": "#pv-tissue-low-level"
@@ -184,16 +190,35 @@
         {
             "@id": "predictions.cwl#slide",
             "@type": "FormalParameter",
-            "additionalType": "ImageObject",
+            "additionalType": "Collection",
             "encodingFormat": "https://openslide.org/formats/mirax/",
             "name": "slide"
         },
         {
-            "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs",
+            "@id": "Mirax2-Fluorescence-2.mrxs",
             "@type": "File",
-            "encodingFormat": "https://openslide.org/formats/mirax/",
+            "encodingFormat": "https://openslide.org/formats/mirax/"
+        },
+        {
+            "@id": "Mirax2-Fluorescence-2/",
+            "@type": "Dataset"
+        },
+        {
+            "@id": "#95acaae7-8ab8-4c51-8b0f-06d12eb2be80",
+            "@type": "Collection",
             "exampleOfWork": {
                 "@id": "predictions.cwl#slide"
+            },
+            "hasPart": [
+                {
+                    "@id": "Mirax2-Fluorescence-2.mrxs"
+                },
+                {
+                    "@id": "Mirax2-Fluorescence-2/"
+                }
+            ],
+            "mainEntity": {
+                "@id": "Mirax2-Fluorescence-2.mrxs"
             }
         },
         {
