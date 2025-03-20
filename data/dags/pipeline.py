@@ -8,6 +8,7 @@ import time
 from datetime import datetime
 from enum import Enum
 from typing import Dict
+from urllib.parse import urlparse
 from uuid import uuid4
 
 import requests
@@ -359,7 +360,7 @@ def tissue_segmentation(label, path) -> str:
         "--scale-func",
         "shapely",
         "--simplify",
-        "0.8"
+        "0.8",
     ]
     docker_run(command, DOCKER_NETWORK)
     return out
@@ -453,7 +454,6 @@ def _get_prediction_location(prediction, output_dir):
 
 @task
 def gather_report(dag_info):
-    workflow_fn = "predictions.cwl"
     params_fn = "params.json"
     metadata_fn = "metadata.yaml"
 
@@ -461,7 +461,24 @@ def gather_report(dag_info):
     output_dir = _get_output_dir(dag_id, dag_run_id)
     with open(os.path.join(output_dir, "workflow_report.json")) as f:
         airflow_report = json.load(f)
-    report = {"workflow": workflow_fn, "params": params_fn, "outs": {}}
+
+    orig_workflow_fn = urlparse(airflow_report["workflow_def"]["id"]).path
+    workflow_fn = os.path.join(output_dir, os.path.basename(orig_workflow_fn))
+    shutil.copy(orig_workflow_fn, workflow_fn)
+
+    steps = airflow_report["workflow_def"].get("steps", [])
+    tools = [step["run"] for step in steps]
+    for tool in tools:
+        tool_path = urlparse(tool).path
+        dest = os.path.join(output_dir, os.path.basename(tool_path))
+        shutil.copy(tool_path, dest)
+
+    report = {
+        "workflow": os.path.basename(workflow_fn),
+        "tools": [os.path.basename(t) for t in tools],
+        "params": params_fn,
+        "outs": {},
+    }
 
     dag_run = get_current_context()["dag_run"]
     task_predictions = dag_run.get_task_instance("predictions")
@@ -477,9 +494,6 @@ def gather_report(dag_info):
     with open(os.path.join(output_dir, metadata_fn), "w") as report_file:
         yaml.dump(report, report_file)
 
-    with open(os.path.join(output_dir, workflow_fn), "w") as cwl:
-        yaml.dump(airflow_report["workflow_def"], cwl)
-
     with open(os.path.join(output_dir, params_fn), "w") as params:
         json.dump(airflow_report["workflow_params"], params)
 
@@ -494,6 +508,15 @@ def gather_report(dag_info):
         },
         open(os.path.join(output_dir, "dates.json"), "w"),
     )
+
+    slide_basename = airflow_report["workflow_params"]["slide"]["path"]
+    slide_path = os.path.join(STAGE_DIR, slide_basename)
+    shutil.copy(slide_path, output_dir)
+    secondary_files = os.path.splitext(slide_path)[0]
+    shutil.copytree(
+        secondary_files, os.path.join(output_dir, os.path.basename(secondary_files))
+    )
+
     return output_dir
 
 
