@@ -20,6 +20,7 @@ cat promort_config/config.yaml
 source .env
 echo "using env:"
 cat .env
+./compose.sh build
 ./compose.sh up -d
 
 cp -r tests/data/Mirax2-Fluorescence-2* $INPUT_DIR
