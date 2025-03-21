@@ -7,7 +7,7 @@ check_omeseadragon (){
   echo $?
 }
 
-check_airflow(){
+check_airflow (){
   curl http://localhost:8080
   echo $?
 
@@ -47,7 +47,7 @@ echo $airflow_status
 while [ $airflow_status -ne 0 ]; do
   echo waiting for airflow to be up and running
   sleep 5
-  airflow_status=$(airflow_status)
+  airflow_status=$(check_airflow)
 done
 
 
