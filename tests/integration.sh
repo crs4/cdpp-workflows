@@ -7,6 +7,12 @@ check_omeseadragon (){
   echo $?
 }
 
+check_airflow(){
+  curl http://localhost:8080
+  echo $?
+
+}
+
 cd ..
 ./create_env.sh
 cat promort_config/config.yaml
@@ -27,14 +33,23 @@ done
 
 ./compose.sh ps
 ./compose.sh logs promort-web
-ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 
+ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 echo $ome_sedragon_status
 while [ $ome_sedragon_status -ne 0 ]; do
   echo waiting for omeseadragon to be up and running
   sleep 5
   ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 done
+
+airflow_status=$(check_airflow)
+echo $airflow_status
+while [ $airflow_status -ne 0 ]; do
+  echo waiting for airflow to be up and running
+  sleep 5
+  airflow_status=$(airflow_status)
+done
+
 
 
 cd slide-importer
