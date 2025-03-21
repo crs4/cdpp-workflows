@@ -10,6 +10,7 @@ check_omeseadragon (){
 check_airflow (){
   curl http://localhost:8080
   echo $?
+  ./compose.sh logs scheduler
 
 }
 
