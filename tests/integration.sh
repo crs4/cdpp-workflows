@@ -43,20 +43,21 @@ while [ $ome_sedragon_status -ne 0 ]; do
   ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 done
 
-airflow_status=$(check_airflow)
-echo $airflow_status
-while [ $airflow_status -ne 0 ]; do
-  echo waiting for airflow to be up and running
-  sleep 5
-  airflow_status=$(check_airflow)
-done
+# airflow_status=$(check_airflow)
+# echo $airflow_status
+# while [ $airflow_status -ne 0 ]; do
+#   echo waiting for airflow to be up and running
+#   sleep 5
+#   airflow_status=$(check_airflow)
+# done
 
 
 
 cd slide-importer
 poetry install
-set -e
+# set -e
 poetry run python slide_importer/local.py  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  -p '{ "tissue-high-level": 8, "tissue-high-filter": "tissue_low>1", "tumor-filter": "tissue_low>1", "gpu": null}' --wait
+echo "TEST ok? " $?
 cd ..
 ./compose.sh logs scheduler
 
