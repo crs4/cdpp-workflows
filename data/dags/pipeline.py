@@ -164,18 +164,23 @@ def predictions() -> Dict[str, str]:
     allowed_states = [State.SUCCESS]
     failed_states = [State.FAILED]
 
-    params_to_update = global_params["params"]
+    slide_param = {"slide": {"class": "File", "path": slide}}
+    input_params = global_params["params"]
+    input_params.update(slide_param)
+
     if dag_id == "predictions":
-        mode = params_to_update.get("mode") or Variable.get("PREDICTIONS_MODE")
+        mode = input_params.get("mode") or Variable.get("PREDICTIONS_MODE")
         if mode == "serial":
             params = Variable.get("SERIAL_PREDICTIONS_PARAMS", deserialize_json=True)
         else:
             params = Variable.get("PARALLEL_PREDICTIONS_PARAMS", deserialize_json=True)
     else:
-        params = {"slide": {"class": "File", "path": slide}}
-    params.update(params_to_update)
+        params = {}
 
-    if "gpu" in params:
+    logger.info("default params %s, input_params %s", params, input_params)
+    params.update(input_params)
+
+    if "gpu" in input_params:
         gpus = os.environ["CWLDOCKER_GPUS"]
         check_gpus_available(gpus)
 
