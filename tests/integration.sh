@@ -56,7 +56,7 @@ done
 cd slide-importer
 poetry install
 # set -e
-poetry run python slide_importer/local.py  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  -p '{ "tissue-high-level": 8, "tissue-high-filter": "tissue_low>1", "tumor-filter": "tissue_low>1", "gpu": null}' --wait
+poetry run python slide_importer/local.py  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  --wait --processing-workflow tissue_segmentation  --params '{"level": 8}'
 echo "TEST ok? " $?
 cd ..
 ./compose.sh logs scheduler

@@ -157,18 +157,24 @@ def add_slide_to_omero(slide) -> Dict[str, str]:
 
 @task
 def predictions() -> Dict[str, str]:
-    slide = get_current_context()["params"]["slide"]
+
+    global_params = get_current_context()["params"]
+    slide = global_params["slide"]
+    dag_id = global_params.get("processing_workflow", "predictions")
     allowed_states = [State.SUCCESS]
     failed_states = [State.FAILED]
-    params_to_update = get_current_context()["params"]["params"]
-    mode = params_to_update.get("mode") or Variable.get("PREDICTIONS_MODE")
-    if mode == "serial":
-        params = Variable.get("SERIAL_PREDICTIONS_PARAMS", deserialize_json=True)
-    else:
-        params = Variable.get("PARALLEL_PREDICTIONS_PARAMS", deserialize_json=True)
 
+    params_to_update = global_params["params"]
+    if dag_id == "predictions":
+        mode = params_to_update.get("mode") or Variable.get("PREDICTIONS_MODE")
+        if mode == "serial":
+            params = Variable.get("SERIAL_PREDICTIONS_PARAMS", deserialize_json=True)
+        else:
+            params = Variable.get("PARALLEL_PREDICTIONS_PARAMS", deserialize_json=True)
+    else:
+        params = {"slide": {"class": "File", "path": slide}}
     params.update(params_to_update)
-    params["slide"]["path"] = slide
+
     if "gpu" in params:
         gpus = os.environ["CWLDOCKER_GPUS"]
         check_gpus_available(gpus)
@@ -177,13 +183,16 @@ def predictions() -> Dict[str, str]:
     triggered_run_id = DagRun.generate_run_id(DagRunType.MANUAL, execution_date)
     triggered_run_id = f"{slide}-{triggered_run_id}"
 
-    logger.info("triggering dag with id %s", triggered_run_id)
-    dag_id = "predictions"
+    conf = {"job": params}
+    logger.info(
+        "triggering dag with id %s, run_id %s, conf %s", dag_id, triggered_run_id, conf
+    )
+
     dag_run = trigger_dag(
         dag_id=dag_id,
         run_id=triggered_run_id,
         execution_date=execution_date,
-        conf={"job": params},
+        conf=conf,
         replace_microseconds=False,
     )
     while True:
@@ -516,8 +525,7 @@ def gather_report(dag_info):
     dest_secondary_files = os.path.join(output_dir, os.path.basename(secondary_files))
     logger.info("copying %s to %s", secondary_files, dest_secondary_files)
     if not os.path.exists(dest_secondary_files):
-        shutil.copytree(
-            secondary_files, dest_secondary_files)
+        shutil.copytree(secondary_files, dest_secondary_files)
 
     return output_dir
 
