@@ -91,7 +91,7 @@ def create_dag():
             slide = slide_info_["slide"]
             slide_to_promort = add_slide_to_promort(slide_info_)
 
-        dag_info = predictions()
+        dag_info = processing()
         slide_to_promort >> dag_info
         report_dir = gather_report(dag_info)
         generate_rocrate(report_dir)
@@ -156,11 +156,11 @@ def add_slide_to_omero(slide) -> Dict[str, str]:
 
 
 @task
-def predictions() -> Dict[str, str]:
+def processing() -> Dict[str, str]:
 
     global_params = get_current_context()["params"]
     slide = global_params["slide"]
-    dag_id = global_params.get("processing_workflow", "predictions")
+    dag_id = global_params.get("processing_workflow", "pca_classification")
     allowed_states = [State.SUCCESS]
     failed_states = [State.FAILED]
 
@@ -168,7 +168,7 @@ def predictions() -> Dict[str, str]:
     input_params = global_params["params"]
     input_params.update(slide_param)
 
-    if dag_id == "predictions":
+    if dag_id == "pca_classification":
         mode = input_params.get("mode") or Variable.get("PREDICTIONS_MODE")
         if mode == "serial":
             params = Variable.get("SERIAL_PREDICTIONS_PARAMS", deserialize_json=True)
@@ -476,7 +476,11 @@ def gather_report(dag_info):
     with open(os.path.join(output_dir, "workflow_report.json")) as f:
         airflow_report = json.load(f)
 
-    orig_workflow_fn = urlparse(airflow_report["workflow_def"]["id"]).path
+    global_params = get_current_context()["params"]
+    cwl_workflow = global_params["processing_workflow"]
+    orig_workflow_fn = f"/cwl/{cwl_workflow}_workflow.cwl"
+
+    # orig_workflow_fn = urlparse(airflow_report["workflow_def"]["id"]).path
     workflow_fn = os.path.join(output_dir, os.path.basename(orig_workflow_fn))
     shutil.copy(orig_workflow_fn, workflow_fn)
 
@@ -495,7 +499,7 @@ def gather_report(dag_info):
     }
 
     dag_run = get_current_context()["dag_run"]
-    task_predictions = dag_run.get_task_instance("predictions")
+    task_predictions = dag_run.get_task_instance("processing")
     report["start_date"] = task_predictions.start_date
     report["end_date"] = task_predictions.end_date
 
