@@ -44,9 +44,9 @@ except ImportError:
 
 
 METADATA_BASENAME = "metadata.yaml"
-WORKFLOW_NAME = "Promort tissue and tumor prediction"
+DEFAULT_NAME = "CWL workflow"
 WORKFLOW_URL = "https://github.com/crs4/deephealth-pipelines"
-WORKFLOW_LICENSE = "MIT"
+DEFAULT_LICENSE = "notspecified"
 TYPE_MAP = {
     "string": "Text",
     "int": "Integer",
@@ -201,10 +201,14 @@ def make_crate(source, out_dir):
         workflow_path, metadata["workflow"], main=True, lang="cwl",
         lang_version=wf_def.cwlVersion, gen_cwl=False
     )
-    workflow["name"] = crate.root_dataset["name"] = WORKFLOW_NAME
-    crate.root_dataset["description"] = WORKFLOW_NAME
+    annot = wf_def.extension_fields
+    name = annot.get("http://schema.org/name", DEFAULT_NAME)
+    description = annot.get("http://schema.org/description", DEFAULT_NAME)
+    license = annot.get("http://schema.org/license", DEFAULT_LICENSE)
+    workflow["name"] = crate.root_dataset["name"] = name
+    crate.root_dataset["description"] = description
     workflow["url"] = crate.root_dataset["isBasedOn"] = WORKFLOW_URL
-    crate.root_dataset["license"] = WORKFLOW_LICENSE
+    crate.root_dataset["license"] = license
     # No README.md for now
     action = add_action(crate, metadata)
     params = get_params(source, metadata)
