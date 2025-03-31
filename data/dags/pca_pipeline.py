@@ -36,7 +36,7 @@ default_args = {
 
 def create_dag():
     with DAG(
-        "pipeline",
+        "pca_pipeline",
         on_failure_callback=handle_error,
         schedule_interval=None,
         max_active_runs=1,
@@ -49,9 +49,10 @@ def create_dag():
             slide = slide_info_["slide"]
             slide_to_promort = add_slide_to_promort(slide_info_)
 
-        dag_info = processing()
+        dag_id = "pca_classification"
+        dag_info = processing(dag_id)
         slide_to_promort >> dag_info
-        report_dir = gather_report(dag_info)
+        report_dir = gather_report(dag_info, dag_id)
         generate_rocrate(report_dir)
 
         for prediction in Prediction:

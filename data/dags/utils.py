@@ -203,11 +203,11 @@ def add_slide_to_omero(slide) -> Dict[str, str]:
 
 
 @task
-def processing() -> Dict[str, str]:
+def processing(cwl_dag_id) -> Dict[str, str]:
 
     global_params = get_current_context()["params"]
     slide = global_params["slide"]
-    dag_id = global_params.get("processing_workflow", "pca_classification")
+    # cwl_dag_id = global_params.get("processing_workflow", "pca_classification")
     allowed_states = [State.SUCCESS]
     failed_states = [State.FAILED]
 
@@ -215,7 +215,7 @@ def processing() -> Dict[str, str]:
     input_params = global_params["params"]
     input_params.update(slide_param)
 
-    if dag_id == "pca_classification":
+    if cwl_dag_id == "pca_classification":
         mode = input_params.get("mode") or Variable.get("PREDICTIONS_MODE")
         if mode == "serial":
             params = Variable.get("SERIAL_PREDICTIONS_PARAMS", deserialize_json=True)
@@ -237,11 +237,11 @@ def processing() -> Dict[str, str]:
 
     conf = {"job": params}
     logger.info(
-        "triggering dag with id %s, run_id %s, conf %s", dag_id, triggered_run_id, conf
+        "triggering dag with id %s, run_id %s, conf %s", cwl_dag_id, triggered_run_id, conf
     )
 
     dag_run = trigger_dag(
-        dag_id=dag_id,
+        dag_id=cwl_dag_id,
         run_id=triggered_run_id,
         execution_date=execution_date,
         conf=conf,
@@ -253,9 +253,9 @@ def processing() -> Dict[str, str]:
         dag_run.refresh_from_db()
         state = dag_run.state
         if state in failed_states:
-            raise AirflowException(f"{dag_id} failed with failed states {state}")
+            raise AirflowException(f"{cwl_dag_id} failed with failed states {state}")
         if state in allowed_states:
-            return {"dag_id": dag_id, "dag_run_id": triggered_run_id}
+            return {"dag_id": cwl_dag_id, "dag_run_id": triggered_run_id}
 
 
 @task
@@ -428,7 +428,7 @@ def _get_prediction_location(prediction, output_dir):
 
 
 @task
-def gather_report(dag_info):
+def gather_report(dag_info, cwl_workflow):
     params_fn = "params.json"
     metadata_fn = "metadata.yaml"
 
@@ -438,7 +438,6 @@ def gather_report(dag_info):
         airflow_report = json.load(f)
 
     global_params = get_current_context()["params"]
-    cwl_workflow = global_params["processing_workflow"]
     orig_workflow_fn = f"/cwl/{cwl_workflow}_workflow.cwl"
 
     # orig_workflow_fn = urlparse(airflow_report["workflow_def"]["id"]).path
