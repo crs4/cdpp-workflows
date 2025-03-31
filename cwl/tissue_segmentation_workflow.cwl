@@ -41,3 +41,9 @@ steps:
       batch-size: batch-size
     out: [tissue]
 
+s:name: "Tissue segmentation workflow"
+s:description: "Tissue segmentation workflow"
+s:license: "MIT"
+
+$namespaces:
+  s: http://schema.org/
