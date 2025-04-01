@@ -56,12 +56,13 @@ done
 cd slide-importer
 poetry install
 # set -e
-poetry run python slide_importer/local.py  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  --wait --processing-workflow tissue_segmentation  --params '{"level": 8}'
-echo "TEST ok? " $?
+poetry run python slide_importer/local.py basic_pipeline  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  --wait --params '{"level": 8}'
+exit_code=$?
+echo "TEST ok? $exit_code" 
 cd ..
-./compose.sh logs scheduler
+# ./compose.sh logs scheduler
 
-[ $(curl http://localhost:4080/ome_seadragon/arrays/list/ | jq length) == 3 ]
+[ $(curl http://localhost:4080/ome_seadragon/arrays/list/ | jq length) == 1 ]
 [ $(curl http://localhost:4080/ome_seadragon/get/images/index/ | jq length) == 1 ]
 
 curl -X POST   --cookie-jar /tmp/cookies http://localhost:8888/api/auth/login/ -d "{\"username\": \"$PROMORT_USER\", \"password\": \"$PROMORT_PASSWORD\"}"
@@ -71,4 +72,4 @@ curl -X POST   --cookie-jar /tmp/cookies http://localhost:8888/api/auth/login/ -
 [ $(find data/ -name ro-crate-metadata.json | wc -l)  == 1 ] 
 
 ./compose.sh down
-
+exit $exit_code 
