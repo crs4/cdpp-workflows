@@ -3,7 +3,7 @@ class: CommandLineTool
 requirements:
   InlineJavascriptRequirement: {}
   DockerRequirement:
-    dockerPull: crs4/slaid:1.1.0-beta.22-tissue_model-eddl_2-cudnn
+    dockerPull: crs4/slaid:1.1.0-beta.25-tissue_model-eddl_2-cudnn
 
   InitialWorkDirRequirement:
     listing:
