@@ -15,7 +15,7 @@
                     "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
                 }
             ],
-            "datePublished": "2025-03-26T15:55:28+00:00",
+            "datePublished": "2025-04-01T09:35:03+00:00",
             "description": "Prostate cancer classification workflow",
             "hasPart": [
                 {
@@ -41,10 +41,10 @@
             },
             "mentions": [
                 {
-                    "@id": "#1036b7fd-377f-4cfe-a6c7-1ebb0b75c5d8"
+                    "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029"
                 },
                 {
-                    "@id": "#e7e8644b-02d4-4e86-bb90-f9eb713481fc"
+                    "@id": "#b095808f-ca03-4563-b23d-c7c60fae4089"
                 }
             ],
             "name": "Prostate cancer classification workflow"
@@ -158,16 +158,16 @@
             "version": "v1.1"
         },
         {
-            "@id": "#e7e8644b-02d4-4e86-bb90-f9eb713481fc",
+            "@id": "#b095808f-ca03-4563-b23d-c7c60fae4089",
             "@type": "CreateAction",
             "endTime": "2021-06-29T16:09:45.814390+00:00",
             "instrument": {
                 "@id": "pca_classification_workflow.cwl"
             },
-            "name": "Promort prediction run on 2021-06-29T16:07:14.873427+00:00",
+            "name": "Prostate cancer classification workflow run on 2021-06-29T16:07:14.873427+00:00",
             "object": [
                 {
-                    "@id": "#1036b7fd-377f-4cfe-a6c7-1ebb0b75c5d8"
+                    "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029"
                 },
                 {
                     "@id": "#pv-tissue-low-level"
@@ -220,20 +220,18 @@
             "@id": "pca_classification_workflow.cwl#slide",
             "@type": "FormalParameter",
             "additionalType": "Collection",
-            "encodingFormat": "https://openslide.org/formats/mirax/",
             "name": "slide"
         },
         {
             "@id": "Mirax2-Fluorescence-2.mrxs",
-            "@type": "File",
-            "encodingFormat": "https://openslide.org/formats/mirax/"
+            "@type": "File"
         },
         {
             "@id": "Mirax2-Fluorescence-2/",
             "@type": "Dataset"
         },
         {
-            "@id": "#1036b7fd-377f-4cfe-a6c7-1ebb0b75c5d8",
+            "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029",
             "@type": "Collection",
             "exampleOfWork": {
                 "@id": "pca_classification_workflow.cwl#slide"
@@ -434,14 +432,12 @@
             "@id": "pca_classification_workflow.cwl#tissue",
             "@type": "FormalParameter",
             "additionalType": "ImageObject",
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "name": "tissue"
         },
         {
             "@id": "tissue_high.zip",
             "@type": "File",
             "contentSize": 4099,
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "exampleOfWork": {
                 "@id": "pca_classification_workflow.cwl#tissue"
             }
@@ -450,14 +446,12 @@
             "@id": "pca_classification_workflow.cwl#tumor",
             "@type": "FormalParameter",
             "additionalType": "ImageObject",
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "name": "tumor"
         },
         {
             "@id": "tumor.zip",
             "@type": "File",
             "contentSize": 70100,
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "exampleOfWork": {
                 "@id": "pca_classification_workflow.cwl#tumor"
             }

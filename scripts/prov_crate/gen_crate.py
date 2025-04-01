@@ -58,8 +58,6 @@ TYPE_MAP = {
     "File": "File",
     "Directory": "Dataset",
 }
-MIRAX_URL = "https://openslide.org/formats/mirax/"
-ZARR_URL = "https://zarr.readthedocs.io/en/stable/spec/v2.html"
 PROFILES_BASE = "https://w3id.org/ro/wfrun"
 PROFILES_VERSION = "0.5"
 WROC_PROFILE_VERSION = "1.0"
@@ -113,13 +111,13 @@ def add_profiles(crate):
     crate.root_dataset["conformsTo"] = profiles
 
 
-def add_action(crate, metadata):
+def add_action(crate, metadata, wf_name):
     start_date = metadata["start_date"].isoformat()
     end_date = metadata["end_date"].isoformat()
     workflow = crate.mainEntity
     properties = {
         "@type": "CreateAction",
-        "name": f"Promort prediction run on {start_date}",
+        "name": f"{wf_name} run on {start_date}",
         "startTime": start_date,
         "endTime": end_date,
     }
@@ -132,30 +130,34 @@ def add_params(params, param_types, metadata, source, crate, action):
     workflow = crate.mainEntity
     inputs, outputs, objects, results = [], [], [], []
     for k, v in params.items():
-        add_type = "Collection" if k == "slide" else param_types[k]
+        if param_types[k] == "File":
+            if not (isinstance(v, dict) and "path" in v):
+                raise ValueError(f"unexpected value format for param '{k}'")
+            in_path = source / v["path"]
+            if in_path.suffix == ".mrxs":
+                add_type = "Collection"
+            else:
+                add_type = "File"
+        else:
+            add_type = param_types[k]
         in_ = crate.add(ContextEntity(crate, f"{workflow.id}#{k}", properties={
             "@type": "FormalParameter",
             "name": k,
             "additionalType": add_type,
         }))
-        # does it make sense for non-file params to have an encodingFormat?
-        if k == "slide":
-            in_["encodingFormat"] = MIRAX_URL
         inputs.append(in_)
-        if isinstance(v, dict) and v.get("class") == "File":
-            mrxs_path = source / v["path"]
-            add_files_path = source / mrxs_path.stem
-            mrxs_file = crate.add_file(
-                mrxs_path,
-                properties={"encodingFormat": MIRAX_URL}
-            )
+        if add_type == "Collection":
+            add_files_path = source / in_path.stem
+            in_file = crate.add_file(in_path)
             add_files_dataset = crate.add_dataset(add_files_path)
             obj = crate.add(ContextEntity(crate, properties={
                 "@type": "Collection"
             }))
-            obj["mainEntity"] = mrxs_file
-            obj["hasPart"] = [mrxs_file, add_files_dataset]
+            obj["mainEntity"] = in_file
+            obj["hasPart"] = [in_file, add_files_dataset]
             crate.root_dataset.append_to("mentions", obj)
+        elif add_type == "File":
+            obj = crate.add_file(in_path)
         else:
             obj = crate.add(ContextEntity(crate, f"#pv-{k}", properties={
                 "@type": "PropertyValue",
@@ -173,7 +175,6 @@ def add_params(params, param_types, metadata, source, crate, action):
             "@type": "FormalParameter",
             "name": k,
             "additionalType": "ImageObject",
-            "encodingFormat": ZARR_URL,
         }))
         outputs.append(out)
         path = source / v["location"]
@@ -183,7 +184,7 @@ def add_params(params, param_types, metadata, source, crate, action):
             v["location"],
             fetch_remote=False,
             validate_url=False,
-            properties={"encodingFormat": ZARR_URL, "contentSize": v["size"]}
+            properties={"contentSize": v["size"]}
         )
         res["exampleOfWork"] = out
         results.append(res)
@@ -210,7 +211,7 @@ def make_crate(source, out_dir):
     workflow["url"] = crate.root_dataset["isBasedOn"] = WORKFLOW_URL
     crate.root_dataset["license"] = license
     # No README.md for now
-    action = add_action(crate, metadata)
+    action = add_action(crate, metadata, workflow["name"])
     params = get_params(source, metadata)
     param_types = get_param_types(params, wf_def)
     add_params(params, param_types, metadata, source, crate, action)
