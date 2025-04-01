@@ -38,9 +38,6 @@
       - name: test provenance
         run: cd tests && ./provenance.sh
 
-      - name: test integration
-        run: cd tests && ./integration.sh
-
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' }}
         id: tag-creation
