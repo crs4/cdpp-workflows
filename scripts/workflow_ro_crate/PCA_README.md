@@ -1,9 +1,9 @@
 # Prostate cancer classification workflow
 
-This workflow performs computational annotation of magnified prostate tissue areas and cancer subregions using deep learning models. The workflow consists of three steps:
+This workflow segments tissue regions and classifies prostate cancer on H&E whole slide images, using AI. It consists of three steps:
 
-1. inference of a low-resolution tissue mask to select areas for further processing;
+1. low-resolution tissue segmentation to select areas for further processing;
 
-2. high-resolution tissue inference to refine borders;
+2. high-resolution tissue segmentation to refine borders - it uses the step 1 as input;
 
-3. high-resolution cancer tissue identification.
+3. high-resolution normal/cancer classification - it uses the step 1 as input.
