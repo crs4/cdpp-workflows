@@ -50,7 +50,7 @@ poetry run python slide_importer/local.py basic_pipeline  --user $AIRFLOW_USER -
 poetry run python slide_importer/local.py pca_pipeline --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:$AIRFLOW_WEBSERVER_PORT -p '{ "tissue-high-level": 8, "tissue-high-filter": "tissue_low>1", "tumor-filter": "tissue_low>1", "gpu": null}'  --wait 
 ```
 
-Parameters for the *basic_pipeline* are defined in ```cwl/extract_tissue.cwl```, while the ones for the *pca_pipeline* are defined in ```cwl/pca_classification_workflow.cwl```.
+Parameters for the *basic_pipeline* are defined in ```tissue_segmentation_workflow.cwl```, while the ones for the *pca_pipeline* are defined in ```cwl/pca_classification_workflow.cwl```.
 
 # Extending workflows
 First, It is strongly suggested to read the documentation of [Apache Airflow](https://airflow.apache.org/). Consider also that the Python module ```data/dags/utils.py``` contains many useful functions.
