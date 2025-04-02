@@ -34,7 +34,8 @@ THIS_DIR = Path(__file__).absolute().parent
 WF_DIR = THIS_DIR.parent.parent / "cwl"
 PCA_WF_PATH = WF_DIR / "pca_classification_workflow.cwl"
 TISSUE_WF_PATH = WF_DIR / "tissue_segmentation_workflow.cwl"
-WORKFLOW_URL = "https://github.com/crs4/deephealth-pipelines"
+PCA_WF_URL = "https://github.com/crs4/deephealth-pipelines"
+TISSUE_WF_URL = "https://github.com/crs4/cdpp-workflows"
 WROC_PROFILE_BASE_URL = "https://w3id.org/workflowhub/workflow-ro-crate"
 WROC_PROFILE_VERSION = "1.0"
 PCA_README = THIS_DIR / "PCA_README.md"
@@ -75,7 +76,7 @@ def add_tools(crate, wf_def):
         })
 
 
-def make_crate(wf_path, readme_path, out_dir, zipped=False):
+def make_crate(wf_path, readme_path, wf_url, out_dir, zipped=False):
     crate = ROCrate(gen_preview=False)
     add_profile(crate)
     wf_def = load_document_by_uri(wf_path, load_all=True)
@@ -89,7 +90,7 @@ def make_crate(wf_path, readme_path, out_dir, zipped=False):
     license = annot.get("http://schema.org/license", "MIT")
     workflow["name"] = crate.root_dataset["name"] = name
     crate.root_dataset["description"] = description
-    workflow["url"] = crate.root_dataset["isBasedOn"] = WORKFLOW_URL
+    workflow["url"] = crate.root_dataset["isBasedOn"] = wf_url
     crate.root_dataset["license"] = license
     add_author(crate)
     add_readme(crate, readme_path)
@@ -104,8 +105,8 @@ def make_crate(wf_path, readme_path, out_dir, zipped=False):
 def main(args):
     out_dir = Path(args.out_dir)
     out_dir.mkdir(parents=True, exist_ok=True)
-    make_crate(PCA_WF_PATH, PCA_README, out_dir, zipped=args.zip)
-    make_crate(TISSUE_WF_PATH, TISSUE_README, out_dir, zipped=args.zip)
+    make_crate(PCA_WF_PATH, PCA_README, PCA_WF_URL, out_dir, zipped=args.zip)
+    make_crate(TISSUE_WF_PATH, TISSUE_README, TISSUE_WF_URL, out_dir, zipped=args.zip)
 
 
 if __name__ == "__main__":
