@@ -129,7 +129,7 @@ def dir_info(tmp_path):
 
 
 def test_slide_importer(slide_importer, dag_id, dag_run_id, tmp_path, dir_info):
-    slide_importer.import_slides()
+    slide_importer.import_slides("predictions", {})
 
     call_args = slide_importer.client.run_pipeline.call_args.args
     assert call_args[3]["slide"].startswith("input")
@@ -139,7 +139,7 @@ def test_slide_importer(slide_importer, dag_id, dag_run_id, tmp_path, dir_info):
 @pytest.mark.parametrize("re_run", ["*", "stage_1"])
 def test_slide_importer_rerun(slide_importer, dag_id, dag_run_id, dir_info, re_run):
     slide_importer.re_run = "*"
-    slide_importer.import_slides()
+    slide_importer.import_slides("predictions", {})
 
     call_args = slide_importer.client.run_pipeline.call_args.args
     assert call_args[3]["slide"].startswith("stage")

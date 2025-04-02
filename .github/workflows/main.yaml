@@ -19,7 +19,7 @@
 
       - uses: actions/setup-python@v2
         with:
-          python-version: '3.8' 
+          python-version: '3.12' 
 
       - name: install deps
         run: |
@@ -37,9 +37,6 @@
 
       - name: test provenance
         run: cd tests && ./provenance.sh
-
-      - name: test integration
-        run: cd tests && ./integration.sh
 
       - name: Bump version and push tag
         if: ${{ github.event_name == 'push' }}

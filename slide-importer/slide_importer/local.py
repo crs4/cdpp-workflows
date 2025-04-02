@@ -12,7 +12,7 @@ from collections import defaultdict
 from getpass import getpass
 from abc import ABC, abstractmethod
 from pathlib import Path
-from typing import Dict, List
+from typing import Dict, Iterator, List, Optional
 
 import clize
 import pytz
@@ -28,8 +28,7 @@ def copy_slide(slide_path: Path, dest: Path) -> Path:
     return _registry.get(slide_path.suffix[1:], SlideCopy)(slide_path).to(dest)
 
 
-class PipelineFailure(Exception):
-    ...
+class PipelineFailure(Exception): ...
 
 
 class SlideCopy:
@@ -84,7 +83,7 @@ class SlideImporter:
     def _get_input_dir(self):
         return self.client.get_var("input_dir")
 
-    def import_slides(self, params: Dict = None) -> int:
+    def import_slides(self, dag_id: str, params: Optional[Dict]) -> int:
         params = params or {}
         source_dir = self._stage_dir if self.re_run else self._input_dir
         pattern = self.re_run or "*"
@@ -93,20 +92,22 @@ class SlideImporter:
         for slide in self._iter_slides(slides):
             logger.info("Processing slide %s", slide)
             try:
-                self._run_pipeline(slide, params)
+                self._run_pipeline(slide, dag_id, params)
             except PipelineFailure as ex:
                 logger.error(ex)
                 faiures += 1
         return faiures
 
-    def _run_pipeline(self, slide: Path, params: Dict):
+    def _run_pipeline(self, slide: Path, dag_id: str, params: Dict):
         now = datetime.datetime.now()
         timezone = pytz.timezone("Europe/Rome")
         now = timezone.localize(now)
         date = now.isoformat()
         dag_run_id = f"{slide.name}-{date}"
-        conf = {"slide": slide.name, "params": params}
-        dag_id = "pipeline"
+        conf = {
+            "slide": slide.name,
+            "params": params,
+        }
         dag_run_id = self.client.run_pipeline(dag_id, dag_run_id, date, conf)
 
         if self.wait:
@@ -122,7 +123,7 @@ class SlideImporter:
             raise PipelineFailure(f"pipeline failed for slide {slide}")
         logger.info("pipeline run SUCCESSFULLY for slide %s", slide)
 
-    def _iter_slides(self, slides: List[Path]) -> List[Path]:
+    def _iter_slides(self, slides: List[Path]) -> Iterator[Path]:
         for slide in slides:
             logger.info("slide %s slide.is_dir() %s", slide.as_posix(), slide.is_dir())
             if not slide.is_dir() and slide.exists():
@@ -131,16 +132,13 @@ class SlideImporter:
 
 class BaseClient(ABC):
     @abstractmethod
-    def run_pipeline(self, dag_id: str, dag_run_id, date: str, conf: Dict) -> str:
-        ...
+    def run_pipeline(self, dag_id: str, dag_run_id, date: str, conf: Dict) -> str: ...
 
     @abstractmethod
-    def get_var(self, name: str) -> str:
-        ...
+    def get_var(self, name: str) -> str: ...
 
     @abstractmethod
-    def get_state(self, dag_id, dag_run_id):
-        ...
+    def get_state(self, dag_id, dag_run_id): ...
 
 
 @dataclass
@@ -183,6 +181,7 @@ class Client(BaseClient):
 
 
 def main(
+    processing_workflow: str = "basic_pipeline",
     *,
     server_url: str,
     user: str,
@@ -202,7 +201,7 @@ def main(
     password = password or getpass()
     failures = SlideImporter(
         Client(server_url, user, password), wait, re_run=re_run
-    ).import_slides(params)
+    ).import_slides(processing_workflow, params)
     sys.exit(failures)
 
 

@@ -84,3 +84,10 @@ steps:
       batch-size: tumor-batch-size
     out:
       [tumor]
+
+s:name: "Prostate cancer classification workflow"
+s:description: "Prostate cancer classification workflow"
+s:license: "MIT"
+
+$namespaces:
+  s: http://schema.org/

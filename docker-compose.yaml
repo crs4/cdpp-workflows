@@ -50,11 +50,11 @@ services:
     # starts after mysql was launched, then waits until airflow gets access to the database,
     # then runs cwl-airflow init creating all required tables in the database and starts scheduler
   scheduler:
-      # image: mdrio/cwl-airflow-scheduler
-      build:
-        context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
-        args: 
-          CWL_AIRFLOW_VERSION: *cwl_airflow_branch
+      image: mdrio/deephealth-pipelines-scheduler
+      # build:
+      #   context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
+      #   args: 
+      #     CWL_AIRFLOW_VERSION: *cwl_airflow_branch
       volumes:  # can't reuse *airflow_volumes as YAML doesn't support sequence merging
           - /var/run/docker.sock:/var/run/docker.sock
           - ${AIRFLOW_HOME}:${AIRFLOW_HOME}
@@ -82,13 +82,12 @@ services:
   # starts after scheduler was launched, then waits untill all required for airflow tables have been
   # created (we just check dag_run table) and starts webserver
   webserver:
-      # image: mdrio/cwl-airflow-webserver
-      build: 
-        context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
-        args: 
-          CWL_AIRFLOW_VERSION: *cwl_airflow_branch
-      <<: *airflow_volumes
-      <<: *airflow_env_var
+      image: mdrio/deephealth-pipelines-webserver
+      # build: 
+      #   context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
+      #   args: 
+      #     CWL_AIRFLOW_VERSION: *cwl_airflow_branch
+      <<: [*airflow_volumes, *airflow_env_var]
       # <<: *airflow_env_file
       restart: always
       command: start_webserver.sh
@@ -116,10 +115,11 @@ services:
 
 
   init:
-      build:
-        context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
-        args: 
-          CWL_AIRFLOW_VERSION: *cwl_airflow_branch
+      image: mdrio/deephealth-pipelines-init
+      # build:
+      #   context: ./build/cwl-airflow/packaging/docker_compose/local_executor/cwl_airflow
+      #   args: 
+      #     CWL_AIRFLOW_VERSION: *cwl_airflow_branch
       volumes:  # can't reuse *airflow_volumes as YAML doesn't support sequence merging
         - ${AIRFLOW_HOME}:${AIRFLOW_HOME}
         - ./scripts/:/scripts

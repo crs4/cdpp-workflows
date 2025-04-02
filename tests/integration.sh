@@ -7,26 +7,35 @@ check_omeseadragon (){
   echo $?
 }
 
+check_airflow (){
+  curl http://localhost:8080
+  echo $?
+
+}
+
 cd ..
 ./create_env.sh
 cat promort_config/config.yaml
 source .env
+echo "using env:"
+cat .env
+./compose.sh build
 ./compose.sh up -d
 
 cp -r tests/data/Mirax2-Fluorescence-2* $INPUT_DIR
 ls -la $INPUT_DIR
 
-running=$(docker-compose ps --services --filter "status=running" | grep init)
+running=$(docker compose ps --services --filter "status=running" | grep init)
 while [ $running ]; do
   echo waiting for init to complete
   sleep 5
-  running=$(docker-compose ps --services --filter "status=running" | grep init)
+  running=$(docker compose ps --services --filter "status=running" | grep init)
 done
 
 ./compose.sh ps
 ./compose.sh logs promort-web
-ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 
+ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 echo $ome_sedragon_status
 while [ $ome_sedragon_status -ne 0 ]; do
   echo waiting for omeseadragon to be up and running
@@ -34,14 +43,26 @@ while [ $ome_sedragon_status -ne 0 ]; do
   ome_sedragon_status=$(check_omeseadragon $OME_SEADRAGON_URL)
 done
 
+# airflow_status=$(check_airflow)
+# echo $airflow_status
+# while [ $airflow_status -ne 0 ]; do
+#   echo waiting for airflow to be up and running
+#   sleep 5
+#   airflow_status=$(check_airflow)
+# done
+
+
 
 cd slide-importer
 poetry install
-set -e
-poetry run python slide_importer/local.py  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  -p '{ "tissue-high-level": 8, "tissue-high-filter": "tissue_low>1", "tumor-filter": "tissue_low>1", "gpu": null}' --wait
+# set -e
+poetry run python slide_importer/local.py basic_pipeline  --user $AIRFLOW_USER -P $AIRFLOW_PASSWORD --server-url http://localhost:8080  --wait --params '{"level": 8}'
+exit_code=$?
+echo "TEST ok? $exit_code" 
 cd ..
+# ./compose.sh logs scheduler
 
-[ $(curl http://localhost:4080/ome_seadragon/arrays/list/ | jq length) == 3 ]
+[ $(curl http://localhost:4080/ome_seadragon/arrays/list/ | jq length) == 1 ]
 [ $(curl http://localhost:4080/ome_seadragon/get/images/index/ | jq length) == 1 ]
 
 curl -X POST   --cookie-jar /tmp/cookies http://localhost:8888/api/auth/login/ -d "{\"username\": \"$PROMORT_USER\", \"password\": \"$PROMORT_PASSWORD\"}"
@@ -51,4 +72,4 @@ curl -X POST   --cookie-jar /tmp/cookies http://localhost:8888/api/auth/login/ -
 [ $(find data/ -name ro-crate-metadata.json | wc -l)  == 1 ] 
 
 ./compose.sh down
-
+exit $exit_code 

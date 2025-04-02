@@ -4,13 +4,28 @@
         {
             "@id": "./",
             "@type": "Dataset",
-            "datePublished": "2022-10-17T13:25:19+00:00",
-            "hasPart": [
+            "conformsTo": [
                 {
-                    "@id": "predictions.cwl"
+                    "@id": "https://w3id.org/ro/wfrun/process/0.5"
                 },
                 {
-                    "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs"
+                    "@id": "https://w3id.org/ro/wfrun/workflow/0.5"
+                },
+                {
+                    "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0"
+                }
+            ],
+            "datePublished": "2025-04-01T09:35:03+00:00",
+            "description": "Prostate cancer classification workflow",
+            "hasPart": [
+                {
+                    "@id": "pca_classification_workflow.cwl"
+                },
+                {
+                    "@id": "Mirax2-Fluorescence-2.mrxs"
+                },
+                {
+                    "@id": "Mirax2-Fluorescence-2/"
                 },
                 {
                     "@id": "tissue_high.zip"
@@ -22,14 +37,17 @@
             "isBasedOn": "https://github.com/crs4/deephealth-pipelines",
             "license": "MIT",
             "mainEntity": {
-                "@id": "predictions.cwl"
+                "@id": "pca_classification_workflow.cwl"
             },
             "mentions": [
                 {
-                    "@id": "#a9f2f0c5-32da-4547-813d-e10f58c9502e"
+                    "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029"
+                },
+                {
+                    "@id": "#b095808f-ca03-4563-b23d-c7c60fae4089"
                 }
             ],
-            "name": "Promort tissue and tumor prediction"
+            "name": "Prostate cancer classification workflow"
         },
         {
             "@id": "ro-crate-metadata.json",
@@ -47,7 +65,25 @@
             ]
         },
         {
-            "@id": "predictions.cwl",
+            "@id": "https://w3id.org/ro/wfrun/process/0.5",
+            "@type": "CreativeWork",
+            "name": "Process Run Crate",
+            "version": "0.5"
+        },
+        {
+            "@id": "https://w3id.org/ro/wfrun/workflow/0.5",
+            "@type": "CreativeWork",
+            "name": "Workflow Run Crate",
+            "version": "0.5"
+        },
+        {
+            "@id": "https://w3id.org/workflowhub/workflow-ro-crate/1.0",
+            "@type": "CreativeWork",
+            "name": "Workflow RO-Crate",
+            "version": "1.0"
+        },
+        {
+            "@id": "pca_classification_workflow.cwl",
             "@type": [
                 "File",
                 "SoftwareSourceCode",
@@ -55,90 +91,83 @@
             ],
             "input": [
                 {
-                    "@id": "predictions.cwl#slide"
+                    "@id": "pca_classification_workflow.cwl#slide"
                 },
                 {
-                    "@id": "predictions.cwl#mode"
+                    "@id": "pca_classification_workflow.cwl#tissue-low-level"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-low-level"
+                    "@id": "pca_classification_workflow.cwl#tissue-low-label"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-low-label"
+                    "@id": "pca_classification_workflow.cwl#tissue-high-level"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-high-level"
+                    "@id": "pca_classification_workflow.cwl#tissue-low-chunk-size"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-low-chunk"
+                    "@id": "pca_classification_workflow.cwl#tissue-high-label"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-high-label"
+                    "@id": "pca_classification_workflow.cwl#tissue-high-filter"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-high-filter"
+                    "@id": "pca_classification_workflow.cwl#tissue-high-chunk-size"
                 },
                 {
-                    "@id": "predictions.cwl#tissue-high-chunk"
+                    "@id": "pca_classification_workflow.cwl#tumor-chunk-size"
                 },
                 {
-                    "@id": "predictions.cwl#tumor-chunk"
+                    "@id": "pca_classification_workflow.cwl#gpu"
                 },
                 {
-                    "@id": "predictions.cwl#gpu"
+                    "@id": "pca_classification_workflow.cwl#tumor-level"
                 },
                 {
-                    "@id": "predictions.cwl#tumor-level"
+                    "@id": "pca_classification_workflow.cwl#tumor-label"
                 },
                 {
-                    "@id": "predictions.cwl#tumor-label"
-                },
-                {
-                    "@id": "predictions.cwl#tumor-filter"
+                    "@id": "pca_classification_workflow.cwl#tumor-filter"
                 }
             ],
-            "name": "Promort tissue and tumor prediction",
+            "name": "Prostate cancer classification workflow",
             "output": [
                 {
-                    "@id": "predictions.cwl#tissue"
+                    "@id": "pca_classification_workflow.cwl#tissue"
                 },
                 {
-                    "@id": "predictions.cwl#tumor"
+                    "@id": "pca_classification_workflow.cwl#tumor"
                 }
             ],
             "programmingLanguage": {
                 "@id": "https://w3id.org/workflowhub/workflow-ro-crate#cwl"
             },
-            "url": "https://github.com/crs4/deephealth-pipelines",
-            "version": "0.1.0b1"
+            "url": "https://github.com/crs4/deephealth-pipelines"
         },
         {
             "@id": "https://w3id.org/workflowhub/workflow-ro-crate#cwl",
             "@type": "ComputerLanguage",
             "alternateName": "CWL",
             "identifier": {
-                "@id": "https://w3id.org/cwl/v1.2/"
+                "@id": "https://w3id.org/cwl/v1.1/"
             },
             "name": "Common Workflow Language",
             "url": {
                 "@id": "https://www.commonwl.org/"
             },
-            "version": "v1.2"
+            "version": "v1.1"
         },
         {
-            "@id": "#a9f2f0c5-32da-4547-813d-e10f58c9502e",
+            "@id": "#b095808f-ca03-4563-b23d-c7c60fae4089",
             "@type": "CreateAction",
             "endTime": "2021-06-29T16:09:45.814390+00:00",
             "instrument": {
-                "@id": "predictions.cwl"
+                "@id": "pca_classification_workflow.cwl"
             },
-            "name": "Promort prediction run on 2021-06-29T16:07:14.873427+00:00",
+            "name": "Prostate cancer classification workflow run on 2021-06-29T16:07:14.873427+00:00",
             "object": [
                 {
-                    "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs"
-                },
-                {
-                    "@id": "#pv-mode"
+                    "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029"
                 },
                 {
                     "@id": "#pv-tissue-low-level"
@@ -150,7 +179,7 @@
                     "@id": "#pv-tissue-high-level"
                 },
                 {
-                    "@id": "#pv-tissue-low-chunk"
+                    "@id": "#pv-tissue-low-chunk-size"
                 },
                 {
                     "@id": "#pv-tissue-high-label"
@@ -159,10 +188,10 @@
                     "@id": "#pv-tissue-high-filter"
                 },
                 {
-                    "@id": "#pv-tissue-high-chunk"
+                    "@id": "#pv-tissue-high-chunk-size"
                 },
                 {
-                    "@id": "#pv-tumor-chunk"
+                    "@id": "#pv-tumor-chunk-size"
                 },
                 {
                     "@id": "#pv-gpu"
@@ -188,37 +217,39 @@
             "startTime": "2021-06-29T16:07:14.873427+00:00"
         },
         {
-            "@id": "predictions.cwl#slide",
+            "@id": "pca_classification_workflow.cwl#slide",
             "@type": "FormalParameter",
-            "additionalType": "ImageObject",
-            "encodingFormat": "https://openslide.org/formats/mirax/",
+            "additionalType": "Collection",
             "name": "slide"
         },
         {
-            "@id": "http://slide-repository:5000/slides/DHT00001-1.mrxs",
-            "@type": "File",
-            "encodingFormat": "https://openslide.org/formats/mirax/",
+            "@id": "Mirax2-Fluorescence-2.mrxs",
+            "@type": "File"
+        },
+        {
+            "@id": "Mirax2-Fluorescence-2/",
+            "@type": "Dataset"
+        },
+        {
+            "@id": "#9ae6b222-abbf-44d1-8f1a-cb9a024af029",
+            "@type": "Collection",
             "exampleOfWork": {
-                "@id": "predictions.cwl#slide"
+                "@id": "pca_classification_workflow.cwl#slide"
+            },
+            "hasPart": [
+                {
+                    "@id": "Mirax2-Fluorescence-2.mrxs"
+                },
+                {
+                    "@id": "Mirax2-Fluorescence-2/"
+                }
+            ],
+            "mainEntity": {
+                "@id": "Mirax2-Fluorescence-2.mrxs"
             }
         },
         {
-            "@id": "predictions.cwl#mode",
-            "@type": "FormalParameter",
-            "additionalType": "Text",
-            "name": "mode"
-        },
-        {
-            "@id": "#pv-mode",
-            "@type": "PropertyValue",
-            "exampleOfWork": {
-                "@id": "predictions.cwl#mode"
-            },
-            "name": "mode",
-            "value": "serial"
-        },
-        {
-            "@id": "predictions.cwl#tissue-low-level",
+            "@id": "pca_classification_workflow.cwl#tissue-low-level",
             "@type": "FormalParameter",
             "additionalType": "Integer",
             "name": "tissue-low-level"
@@ -227,13 +258,13 @@
             "@id": "#pv-tissue-low-level",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-low-level"
+                "@id": "pca_classification_workflow.cwl#tissue-low-level"
             },
             "name": "tissue-low-level",
             "value": "9"
         },
         {
-            "@id": "predictions.cwl#tissue-low-label",
+            "@id": "pca_classification_workflow.cwl#tissue-low-label",
             "@type": "FormalParameter",
             "additionalType": "Text",
             "name": "tissue-low-label"
@@ -242,13 +273,13 @@
             "@id": "#pv-tissue-low-label",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-low-label"
+                "@id": "pca_classification_workflow.cwl#tissue-low-label"
             },
             "name": "tissue-low-label",
             "value": "tissue_low"
         },
         {
-            "@id": "predictions.cwl#tissue-high-level",
+            "@id": "pca_classification_workflow.cwl#tissue-high-level",
             "@type": "FormalParameter",
             "additionalType": "Integer",
             "name": "tissue-high-level"
@@ -257,28 +288,28 @@
             "@id": "#pv-tissue-high-level",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-high-level"
+                "@id": "pca_classification_workflow.cwl#tissue-high-level"
             },
             "name": "tissue-high-level",
             "value": "8"
         },
         {
-            "@id": "predictions.cwl#tissue-low-chunk",
+            "@id": "pca_classification_workflow.cwl#tissue-low-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tissue-low-chunk"
+            "name": "tissue-low-chunk-size"
         },
         {
-            "@id": "#pv-tissue-low-chunk",
+            "@id": "#pv-tissue-low-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-low-chunk"
+                "@id": "pca_classification_workflow.cwl#tissue-low-chunk-size"
             },
-            "name": "tissue-low-chunk",
+            "name": "tissue-low-chunk-size",
             "value": "256"
         },
         {
-            "@id": "predictions.cwl#tissue-high-label",
+            "@id": "pca_classification_workflow.cwl#tissue-high-label",
             "@type": "FormalParameter",
             "additionalType": "Text",
             "name": "tissue-high-label"
@@ -287,13 +318,13 @@
             "@id": "#pv-tissue-high-label",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-high-label"
+                "@id": "pca_classification_workflow.cwl#tissue-high-label"
             },
             "name": "tissue-high-label",
             "value": "tissue_high"
         },
         {
-            "@id": "predictions.cwl#tissue-high-filter",
+            "@id": "pca_classification_workflow.cwl#tissue-high-filter",
             "@type": "FormalParameter",
             "additionalType": "Text",
             "name": "tissue-high-filter"
@@ -302,43 +333,43 @@
             "@id": "#pv-tissue-high-filter",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-high-filter"
+                "@id": "pca_classification_workflow.cwl#tissue-high-filter"
             },
             "name": "tissue-high-filter",
             "value": "tissue_low>1"
         },
         {
-            "@id": "predictions.cwl#tissue-high-chunk",
+            "@id": "pca_classification_workflow.cwl#tissue-high-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tissue-high-chunk"
+            "name": "tissue-high-chunk-size"
         },
         {
-            "@id": "#pv-tissue-high-chunk",
+            "@id": "#pv-tissue-high-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue-high-chunk"
+                "@id": "pca_classification_workflow.cwl#tissue-high-chunk-size"
             },
-            "name": "tissue-high-chunk",
+            "name": "tissue-high-chunk-size",
             "value": "1536"
         },
         {
-            "@id": "predictions.cwl#tumor-chunk",
+            "@id": "pca_classification_workflow.cwl#tumor-chunk-size",
             "@type": "FormalParameter",
             "additionalType": "Integer",
-            "name": "tumor-chunk"
+            "name": "tumor-chunk-size"
         },
         {
-            "@id": "#pv-tumor-chunk",
+            "@id": "#pv-tumor-chunk-size",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor-chunk"
+                "@id": "pca_classification_workflow.cwl#tumor-chunk-size"
             },
-            "name": "tumor-chunk",
+            "name": "tumor-chunk-size",
             "value": "1536"
         },
         {
-            "@id": "predictions.cwl#gpu",
+            "@id": "pca_classification_workflow.cwl#gpu",
             "@type": "FormalParameter",
             "additionalType": "Integer",
             "name": "gpu"
@@ -347,13 +378,13 @@
             "@id": "#pv-gpu",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#gpu"
+                "@id": "pca_classification_workflow.cwl#gpu"
             },
             "name": "gpu",
             "value": "0"
         },
         {
-            "@id": "predictions.cwl#tumor-level",
+            "@id": "pca_classification_workflow.cwl#tumor-level",
             "@type": "FormalParameter",
             "additionalType": "Integer",
             "name": "tumor-level"
@@ -362,13 +393,13 @@
             "@id": "#pv-tumor-level",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor-level"
+                "@id": "pca_classification_workflow.cwl#tumor-level"
             },
             "name": "tumor-level",
             "value": "1"
         },
         {
-            "@id": "predictions.cwl#tumor-label",
+            "@id": "pca_classification_workflow.cwl#tumor-label",
             "@type": "FormalParameter",
             "additionalType": "Text",
             "name": "tumor-label"
@@ -377,13 +408,13 @@
             "@id": "#pv-tumor-label",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor-label"
+                "@id": "pca_classification_workflow.cwl#tumor-label"
             },
             "name": "tumor-label",
             "value": "tumor"
         },
         {
-            "@id": "predictions.cwl#tumor-filter",
+            "@id": "pca_classification_workflow.cwl#tumor-filter",
             "@type": "FormalParameter",
             "additionalType": "Text",
             "name": "tumor-filter"
@@ -392,41 +423,37 @@
             "@id": "#pv-tumor-filter",
             "@type": "PropertyValue",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor-filter"
+                "@id": "pca_classification_workflow.cwl#tumor-filter"
             },
             "name": "tumor-filter",
             "value": "tissue_low>1"
         },
         {
-            "@id": "predictions.cwl#tissue",
+            "@id": "pca_classification_workflow.cwl#tissue",
             "@type": "FormalParameter",
             "additionalType": "ImageObject",
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "name": "tissue"
         },
         {
             "@id": "tissue_high.zip",
             "@type": "File",
             "contentSize": 4099,
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tissue"
+                "@id": "pca_classification_workflow.cwl#tissue"
             }
         },
         {
-            "@id": "predictions.cwl#tumor",
+            "@id": "pca_classification_workflow.cwl#tumor",
             "@type": "FormalParameter",
             "additionalType": "ImageObject",
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "name": "tumor"
         },
         {
             "@id": "tumor.zip",
             "@type": "File",
             "contentSize": 70100,
-            "encodingFormat": "https://zarr.readthedocs.io/en/stable/spec/v2.html",
             "exampleOfWork": {
-                "@id": "predictions.cwl#tumor"
+                "@id": "pca_classification_workflow.cwl#tumor"
             }
         }
     ]
