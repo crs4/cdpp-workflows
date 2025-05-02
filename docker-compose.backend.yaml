@@ -59,6 +59,7 @@ services:
       - IMAGES_REPOSITORY=/OMERO/
       - MIRAX_FOLDER=/data/MIRAX
       - DATASETS_REPOSITORY=${PREDICTIONS_DIR}
+      - SLIDE_LIMIT_BOUNDS=False
 
     volumes:
       - ${CWL_INPUTS_FOLDER}:/OMERO:ro
