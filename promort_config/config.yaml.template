@@ -42,5 +42,5 @@ promort_groups:
     name: PREDICTION_MANAGERS
 
 ome_seadragon:
-  base_url: http://omeseadragon:4080/ome_seadragon/
-  static_files_url: http://omeseadragon:4080/static/
+  base_url: http://omeseadragon-nginx:8090/ome_seadragon/
+  static_files_url: http://omeseadragon-nginx:8090/static/
