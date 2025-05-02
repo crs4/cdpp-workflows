@@ -16,6 +16,9 @@ if [ ! -f promort_config/config.yaml ]; then
   sed  -i "s|PROMORT_USER|${PROMORT_USER}|g" promort_config/config.yaml
   sed  -i "s|PROMORT_PASSWORD|${PROMORT_PASSWORD}|g" promort_config/config.yaml
   sed  -i "s|PROMORT_SESSION_ID|${PROMORT_SESSION_ID}|g" promort_config/config.yaml
+  # Replace omeseadragon-nginx with host machine's IP address
+  HOST_IP=$(hostname -I | awk '{print $1}')
+  sed -i "s|omeseadragon-nginx|${HOST_IP}|g" promort_config/config.yaml
 else
    echoerr "promort conf found, skip creation"
 fi
