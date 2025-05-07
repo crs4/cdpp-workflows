@@ -10,8 +10,8 @@ django:
 database:
   engine: postgresql
   name: PROMORT_DB
-  user: PROMORT_USER
-  password: PROMORT_PASSWORD
+  user: PROMORT_DB_USER
+  password: PROMORT_DB_PASSWORD
   host: promort-db
   port: 5432
 
