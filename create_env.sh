@@ -12,7 +12,7 @@ source .env
 
 if [ ! -f promort_config/config.yaml ]; then
   cp promort_config/config.yaml.template promort_config/config.yaml
-  sed  -i "s|PROMORT_DB|${PROMORT_DB}|g" promort_config/config.yaml
+  sed  -i "s|PROMORT_DB_NAME|${PROMORT_DB_NAME}|g" promort_config/config.yaml
   sed  -i "s|PROMORT_DB_USER|${PROMORT_DB_USER}|g" promort_config/config.yaml
   sed  -i "s|PROMORT_DB_PASSWORD|${PROMORT_DB_PASSWORD}|g" promort_config/config.yaml
   sed  -i "s|PROMORT_SESSION_ID|${PROMORT_SESSION_ID}|g" promort_config/config.yaml

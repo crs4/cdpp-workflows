@@ -9,7 +9,7 @@ django:
 
 database:
   engine: postgresql
-  name: PROMORT_DB
+  name: PROMORT_DB_NAME
   user: PROMORT_DB_USER
   password: PROMORT_DB_PASSWORD
   host: promort-db

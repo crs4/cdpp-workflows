@@ -86,7 +86,7 @@ services:
         aliases:
           - promort-db
     environment:
-      - POSTGRES_DB=${PROMORT_DB}
+      - POSTGRES_DB=${PROMORT_DB_NAME}
       - POSTGRES_USER=${PROMORT_DB_USER}
       - POSTGRES_PASSWORD=${PROMORT_DB_PASSWORD}
     volumes:
