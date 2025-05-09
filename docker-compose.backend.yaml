@@ -42,7 +42,7 @@ services:
       - ome-server-var:/opt/omero/server/OMERO.server/var
 
   omeseadragon:
-    image: crs4/ome_seadragon-web:0.8.4-ome5.11-rc2
+    image: crs4/ome_seadragon-web:0.8.5-ome5.11
     depends_on:
       - omero-server
       - redis-server
@@ -67,8 +67,7 @@ services:
       - ${CWL_INPUTS_FOLDER}:/data/MIRAX:ro
 
   omeseadragon-nginx:
-    # build: /opt/git/ome_seadragon-nginx-docker
-    image: crs4/ome_seadragon-nginx:0.8.3-ome5.11
+    image: crs4/ome_seadragon-nginx:0.8.5-ome5.11
     depends_on:
       - omeseadragon
     entrypoint: ['/usr/local/bin/wait-for-it.sh', 'omeseadragon:4080', '--timeout=600', '--strict', '--',
@@ -118,7 +117,7 @@ services:
       - ./scripts/promort/81_create_user.sh:/startup/81_create_user.sh
 
   promort-nginx:
-    image: crs4/promort-nginx:0.9.4
+    image: crs4/promort-nginx:0.11.0
     depends_on:
       - promort-web
     entrypoint: ['/usr/local/bin/wait-for-it.sh', 'promort-web:8080', '--timeout=600', '--strict', '--',
